@@ -1,0 +1,9 @@
+// スプレッドシートの初期化
+function deleteAllSheet() {
+  let sheet = SpreadsheetApp.getActiveSpreadsheet();
+  let allSheet = sheet.getSheets();
+  sheet.insertSheet();
+  for (let i = 0; i < allSheet.length; i++) {
+    sheet.deleteSheet(allSheet[i]);
+  }
+}
