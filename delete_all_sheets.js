@@ -1,5 +1,5 @@
 // スプレッドシートの初期化
-function deleteAllSheet() {
+function deleteAllSheets() {
   let sheet = SpreadsheetApp.getActiveSpreadsheet();
   let allSheet = sheet.getSheets();
   sheet.insertSheet();
