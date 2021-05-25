@@ -1,3 +1,4 @@
+// Google Analyticsのイベント数を取得して、スプレッドシートに書き込む
 function getGoogleAnalyticsData() {
   // トラッキングIDを入力
   let viewId = 'ga:' + 'xxxxxxxxxxxxxxxxxxxx';
