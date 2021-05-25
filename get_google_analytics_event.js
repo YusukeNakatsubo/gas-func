@@ -51,9 +51,9 @@ function getGoogleAnalyticsData() {
     let value = row.metrics[0].values[0];
 
     if(r > 2) {
-      var prevRow = dataset[dataset.length-1];
-      var regUrl = url.replace(/\?.*$/g, '');
-      var prevUrl = prevRow[0];
+      let prevRow = dataset[dataset.length-1];
+      let regUrl = url.replace(/\?.*$/g, '');
+      let prevUrl = prevRow[0];
       if(prevUrl === regUrl) {
         r--;
         prevRow[1] = Number(prevRow[1]) + Number(value);
