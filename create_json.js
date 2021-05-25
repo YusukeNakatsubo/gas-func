@@ -1,3 +1,4 @@
+// スプレッドシートから値を取得し、JSONフォーマットでダウンロードする
 function convertToJson() {
   let dialog_html = HtmlService.createTemplateFromFile('dialog').evaluate();
 
