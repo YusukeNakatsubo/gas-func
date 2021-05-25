@@ -11,22 +11,22 @@ function createFileList() {
   let folderId = ary[ary.length - 1];
   let folder = DriveApp.getFolderById(folderId);
 
-  appendLog(["種類", "名前", "URL", "最終更新日時"], sheetId, sheetName);
+  appendLog(['種類', '名前', 'URL', '最終更新日時'], sheetId, sheetName);
 
   // get folders
   function getAllFolders(f) {
     let folders = f.getFolders();
     while (folders.hasNext()) {
       let subFolder = folders.next();
-      let lastUpdatedDate = Utilities.formatDate(subFolder.getLastUpdated(), "JST", "yyyy年MM月dd日 HH:mm:ss");
-      appendLog(["フォルダ", subFolder.getName(), subFolder.getUrl(), lastUpdatedDate], sheetId, sheetName);
+      let lastUpdatedDate = Utilities.formatDate(subFolder.getLastUpdated(), 'JST', 'yyyy年MM月dd日 HH:mm:ss');
+      appendLog(['フォルダ', subFolder.getName(), subFolder.getUrl(), lastUpdatedDate], sheetId, sheetName);
 
       // get subfolder & flies
       try {
         getAllFiles(subFolder);
         getAllFolders(subFolder);
       } catch (e) {
-        let msg = "エラーが発生しました"
+        let msg = 'エラーが発生しました'
         Browser.msgBox(msg);
       }
     }
@@ -37,18 +37,18 @@ function createFileList() {
     let files = f.getFiles();
     while (files.hasNext()) {
       let file = files.next();
-      let lastUpdatedDate = Utilities.formatDate(file.getLastUpdated(), "JST", "yyyy年MM月dd日 HH:mm:ss");
-      appendLog(["└ ファイル", file.getName(), file.getUrl(), lastUpdatedDate], sheetId, sheetName)
+      let lastUpdatedDate = Utilities.formatDate(file.getLastUpdated(), 'JST', 'yyyy年MM月dd日 HH:mm:ss');
+      appendLog(['└ ファイル', file.getName(), file.getUrl(), lastUpdatedDate], sheetId, sheetName)
     }
   }
 
   try {
     getAllFiles(folder);
     getAllFolders(folder);
-    let msg = "ファイルを自動取得しました"
+    let msg = 'ファイルを自動取得しました'
     Browser.msgBox(msg);
   } catch (e) {
-    let msg = "エラーが発生しました"
+    let msg = 'エラーが発生しました'
     Browser.msgBox(msg);
   }
 
