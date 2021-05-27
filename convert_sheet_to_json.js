@@ -1,3 +1,4 @@
+// スプレッドシートから値を取得して、JSONを返す
 function doGet(e) {
   // sheet
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
@@ -46,7 +47,6 @@ function doGet(e) {
     }
     jsonAry.push(json);
   }
-  // Logger.log(jsonAry);
 
   //create json
   let json = jsonAry;
