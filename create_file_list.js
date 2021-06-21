@@ -1,62 +1,63 @@
 // GoogleDriveに保管されているファイルを、スプレッドシートに書き込む
 function createFileList() {
-  // sheet
-  let sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  let sheetId = SpreadsheetApp.getActiveSpreadsheet().getId();
-  let sheetName = sheet.getName();
+  // get sheet
+  const ACTIVE_SHEET = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const ACTIVE_SHEET_ID = SpreadsheetApp.getActiveSpreadsheet().getId();
+  const ACTIVE_SHEET_NAME = ACTIVE_SHEET.getName();
 
-  // folder
-  let folderUrl = sheet.getRange('A2').getValue();
-  let ary = folderUrl.split('/');
-  let folderId = ary[ary.length - 1];
-  let folder = DriveApp.getFolderById(folderId);
+  // get folder
+  const FOLDER_URL = ACTIVE_SHEET.getRange('A2').getValue();
+  const ARY_FOLDER_URL = FOLDER_URL.split('/');
+  const ACTIVE_FOLDER_ID = ARY_FOLDER_URL[ARY_FOLDER_URL.length - 1];
+  const ACTIVE_FOLDER = DriveApp.getFolderById(ACTIVE_FOLDER_ID);
+  let browserMsg;
 
-  appendLog(['種類', '名前', 'URL', '最終更新日時'], sheetId, sheetName);
+  appendLog(['種類', '名前', 'URL', '最終更新日時'], ACTIVE_SHEET_ID, ACTIVE_SHEET_NAME);
 
   // get folders
   function getAllFolders(f) {
-    let folders = f.getFolders();
-    while (folders.hasNext()) {
-      let subFolder = folders.next();
-      let lastUpdatedDate = Utilities.formatDate(subFolder.getLastUpdated(), 'JST', 'yyyy年MM月dd日 HH:mm:ss');
-      appendLog(['フォルダ', subFolder.getName(), subFolder.getUrl(), lastUpdatedDate], sheetId, sheetName);
+    const FOLDERS = f.getFolders();
+    while (FOLDERS.hasNext()) {
+      const SUB_FOLDER = FOLDERS.next();
+      const LAST_UPDATED_DATE = Utilities.formatDate(SUB_FOLDER.getLastUpdated(), 'JST', 'yyyy年MM月dd日 HH:mm:ss');
+      appendLog(['フォルダ', SUB_FOLDER.getName(), SUB_FOLDER.getUrl(), LAST_UPDATED_DATE], ACTIVE_SHEET_ID, ACTIVE_SHEET_NAME);
 
       // get subfolder & flies
       try {
-        getAllFiles(subFolder);
-        getAllFolders(subFolder);
+        getAllFiles(SUB_FOLDER);
+        getAllFolders(SUB_FOLDER);
       } catch (e) {
-        let msg = 'エラーが発生しました'
-        Browser.msgBox(msg);
+        browserMsg = 'エラーが発生しました'
+        Browser.msgBox(browserMsg);
       }
     }
   }
 
   // get files
   function getAllFiles(f) {
-    let files = f.getFiles();
-    while (files.hasNext()) {
-      let file = files.next();
-      let lastUpdatedDate = Utilities.formatDate(file.getLastUpdated(), 'JST', 'yyyy年MM月dd日 HH:mm:ss');
-      appendLog(['└ ファイル', file.getName(), file.getUrl(), lastUpdatedDate], sheetId, sheetName)
+    const FILES = f.getFiles();
+    while (FILES.hasNext()) {
+      const FILE = FILES.next();
+      const LAST_UPDATED_DATE = Utilities.formatDate(FILE.getLastUpdated(), 'JST', 'yyyy年MM月dd日 HH:mm:ss');
+      appendLog(['└ ファイル', FILE.getName(), FILE.getUrl(), LAST_UPDATED_DATE], ACTIVE_SHEET_ID, ACTIVE_SHEET_NAME)
     }
   }
 
   try {
-    getAllFiles(folder);
-    getAllFolders(folder);
-    let msg = 'ファイルを自動取得しました'
-    Browser.msgBox(msg);
+    getAllFiles(ACTIVE_FOLDER);
+    getAllFolders(ACTIVE_FOLDER);
+    browserMsg = 'ファイルを自動取得しました'
+    Browser.msgBox(browserMsg);
   } catch (e) {
-    let msg = 'エラーが発生しました'
-    Browser.msgBox(msg);
+    browserMsg = 'エラーが発生しました'
+    Browser.msgBox(browserMsg);
   }
 
 }
 
 // add row
 function appendLog(log, id, name) {
-  if (name === void 0) { name = sheetName; }
-  let spreadSheet = SpreadsheetApp.openById(id);
-  spreadSheet.getSheetByName(name).appendRow([log[0], log[1], log[2], log[3]]);
+  if (name === void 0) { name = ACTIVE_SHEET_NAME; }
+  const SPREAD_SHEET = SpreadsheetApp.openById(id);
+  SPREAD_SHEET.getSheetByName(name).appendRow([log[0], log[1], log[2], log[3]]);
 }
