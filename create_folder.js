@@ -1,29 +1,27 @@
 // リストからGoogleDriveにフォルダを自動生成する
-function createFolders() {
-  // sheet
-  let sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+function createFolder() {
+  // get active sheet
+  const ACTIVE_SHEET = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 
-  // folder
-  let folderUrl = sheet.getRange('A2').getValue();
-  let ary = folderUrl.split('/');
-  let folderId = ary[ary.length - 1];
-  let lastRow = sheet.getLastRow();
-  let folder = DriveApp.getFolderById(folderId);
+  // get active folder
+  const ACTIVE_FOLDER_URL = ACTIVE_SHEET.getRange('A2').getValue();
+  const ARY_FOLDER_URL = ACTIVE_FOLDER_URL.split('/');
+  const ACTIVE_FOLDER_ID = ARY_FOLDER_URL[ARY_FOLDER_URL.length - 1];
+  const LAST_ROW = ACTIVE_SHEET.getLastRow();
+  const ACTIVE_FOLDER = DriveApp.getFolderById(ACTIVE_FOLDER_ID);
+  let browserMsg;
 
   // create folders
   try {
-    let fileRange = sheet.getRange(4, 1, lastRow - 3).getValues();
-    Logger.log(fileRange);
-    for (let i = 0; i <= ary.length; i++) {
-      if (fileRange[i][0] !== "") {
-        folder.createFolder(fileRange[i][0])
-        Logger.log(fileRange[i]);
-      }
+    const FILE_RANGES = ACTIVE_SHEET.getRange(4, 1, LAST_ROW - 3).getValues();
+    for (const FILE_RANGE of FILE_RANGES) {
+      ACTIVE_FOLDER.createFolder(FILE_RANGE);
     }
-    let msg = "フォルダを作成しました"
-    Browser.msgBox(msg);
+    browserMsg = 'フォルダを作成しました'
+    Browser.msgBox(browserMsg);
   } catch(e) {
-    let msg = "フォルダ名をシートに入力してください"
-    Browser.msgBox(msg);
+    browserMsg = 'フォルダ名をシートに入力してください'
+    Browser.msgBox(browserMsg);
+    console.log(e);
   }
 }
