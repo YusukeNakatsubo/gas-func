@@ -6,24 +6,26 @@ function convertToJson() {
 }
 
 // getData
+// getData
 function getData() {
-  let sheet = SpreadsheetApp.getActiveSheet();
-  let maxRow = sheet.getLastRow();
-  let maxColumn = sheet.getLastColumn();
+  // get sheet
+  const ACTIVE_SHEET = SpreadsheetApp.getActiveSheet();
+  const MAX_LOW = ACTIVE_SHEET.getLastRow();
+  const MAX_COLUMN = ACTIVE_SHEET.getLastColumn();
 
+  // json key & data
   let keys = [];
   let data = [];
 
-  for (let x = 1; x <= maxColumn; x++) {
-    keys.push(sheet.getRange(1, x).getValue());
+  for (let x = 1; x <= MAX_COLUMN; x++) {
+    keys.push(ACTIVE_SHEET.getRange(1, x).getValue());
   }
 
-  for (let y = 2; y <= maxRow; y++) {
+  for (let y = 2; y <= MAX_LOW; y++) {
     let json = {};
-    for (let x = 1; x <= maxColumn; x++) {
-      json[keys[x-1]] = sheet.getRange(y, x).getValue();
+    for (let x = 1; x <= MAX_COLUMN; x++) {
+      json[keys[x-1]] = ACTIVE_SHEET.getRange(y, x).getValue();
     }
-
     data.push(json);
   }
 
