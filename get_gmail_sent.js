@@ -10,13 +10,13 @@ function getSentMail() {
       let mail_plainBody = mail.getPlainBody();
 
       // get sheet
-      const sheet = SpreadsheetApp.getActiveSheet();
-      const lastRow = sheet.getLastRow() + 1;
+      const ACTIVE_SHEET = SpreadsheetApp.getActiveSheet();
+      const LAST_ROW = ACTIVE_SHEET.getLastRow() + 1;
 
       // set value
-      sheet.getRange(lastRow, 1).setValue(mail_date);
-      sheet.getRange(lastRow, 2).setValue(mail_subject);
-      sheet.getRange(lastRow, 3).setValue(mail_plainBody);
+      ACTIVE_SHEET.getRange(LAST_ROW, 1).setValue(mail_date);
+      ACTIVE_SHEET.getRange(LAST_ROW, 2).setValue(mail_subject);
+      ACTIVE_SHEET.getRange(LAST_ROW, 3).setValue(mail_plainBody);
     });
 
   });
